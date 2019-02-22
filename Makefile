@@ -1,4 +1,4 @@
-git-push: git-add-all git-commit-dev
+git-push: git-add-all git-commit-dev git-pull
 	git status
 
 git-add-all: 
