@@ -1,4 +1,5 @@
 /vendor/
 /logs/*
 /.vscode/
+/databases/
 !/logs/README.md
