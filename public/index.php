@@ -9,6 +9,10 @@ if (PHP_SAPI == 'cli-server') {
     }
 }
 
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+
 define("SP_DIR", dirname(__DIR__));
 
 require __DIR__ . '/../vendor/autoload.php';
