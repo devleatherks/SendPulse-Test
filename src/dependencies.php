@@ -25,3 +25,11 @@ $container['logger'] = function ($c) {
     return $logger;
 
 };
+
+# Monolog
+$container['mongoDB'] = function ($c) {
+
+    return (new MongoDB\Client);
+
+};
+

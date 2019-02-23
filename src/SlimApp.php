@@ -1,7 +1,8 @@
 <?php 
 
     use Psr\Container\ContainerInterface;
-    class SP_App{
+
+    class SlimApp{
 
         /**
          * Types of page replies
@@ -63,6 +64,47 @@
             'odt'   => 'application/vnd.oasis.opendocument.text',
             'ods'   => 'application/vnd.oasis.opendocument.spreadsheet',
         ];
+
+        /**
+         * Base Models
+         * 
+         * @var array
+         */
+        private static $models = [];
+
+
+        /**
+         * Slim container
+         * 
+         * @var Psr\Container\ContainerInterface
+         */
+        protected $container;
+
+        /**
+         * Constructor receives container instance
+         * 
+         * @param Psr\Container\ContainerInterface $container;
+         */
+        public function __construct(ContainerInterface $container) {
+            $this->container = $container;
+        }
+
+        /**
+         * Подключает модель к контроллеру
+         *
+         * @param string $namemodel
+         * @return void
+         */
+        protected function model(string $namemodel){
+
+            $model = 'Models\\' . $namemodel;
+
+            if(!empty(self::$models[$model]))
+                return self::$models[$model];
+
+            return self::$models[$model] = new $model(self::$container);
+
+        }
 
         public static function view(ContainerInterface $container, String $contentType, Array $out, int $code = 200, String $template = 'index'){
 

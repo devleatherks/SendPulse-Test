@@ -7,3 +7,5 @@ use Slim\Http\Response;
 
 // Routes
 $app->get('/', Controllers\ControllerHome::class . ':view_main');
+
+$app->get('/parser', Controllers\ControllerHome::class . ':api_setPrseURL');
