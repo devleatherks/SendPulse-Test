@@ -9,6 +9,12 @@ return [
             'template_path' => __DIR__ . '/../templates/',
         ],
 
+        'mongodb' => [
+            'username'  => '',
+            'email'     => '',
+            'name'      => '',
+        ],
+
         // Monolog settings
         'logger' => [
             'name' => 'slim-app-',
