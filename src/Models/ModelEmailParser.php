@@ -1,8 +1,20 @@
 <?php 
 
+    /**
+     * Manager Models 
+     * 
+     * PHP Version >= 7.2
+     * 
+     * @author Sergey Kozhedub <malati4ik123@gmail.com>
+     * @package Models
+     * @version 1.0.1
+     */
+
     namespace Models;
 
-    class ModelEmailParser{
+    use Helper;
+
+    class ModelEmailParser extends SlimModels{
 
         /**
          * Default Database Models
@@ -12,37 +24,13 @@
         protected $database = 'email_parser';
 
         /**
-         * All use table
-         * 
-         * @var object
+         * Set New Task To DB
          */
-        private static $useDatabase = [];
-
-        /**
-         * Constructor receives container instance
-         * 
-         * @param Psr\Container\ContainerInterface $container;
-         */
-        public function __construct(ContainerInterface $container) {
-            $this->container = $container;
-        }
-
-        /**
-         * Get Object DB
-         * 
-         * @param $db_table - use table
-         * @return object extends table
-         */
-        protected function mongoDB(string $db_table){
-
-            return $this->container->mongoDB->{$database}->{$db_table};
-        }
-
         public function setNewTask(){
 
             $collection = $this->mongoDB('parser_task');
             
-            // $insertOneResult = $collection->insertOne(['_id' => 1, 'name' => 'Alice']);
+            $insertOneResult = $collection->insertOne(['_id' => 1, 'name' => 'Alice']);
 
         }
 

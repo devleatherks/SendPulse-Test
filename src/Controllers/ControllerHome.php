@@ -3,7 +3,10 @@
      * Controller Page Home
      * 
      * PHP Version >= 7.2
+     * 
      * @author Sergey Kozhedub <malati4ik123@gmail.com>
+     * @package Controllers
+     * @version 1.0.1
      */
 
     namespace Controllers;
@@ -11,6 +14,7 @@
     use Psr\Container\ContainerInterface;
     use Slim\Http\Request;
     use Slim\Http\Response;
+    use Helper;
 
     class ControllerHome extends SlimApp{
 
