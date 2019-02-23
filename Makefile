@@ -5,7 +5,7 @@ git-add-all:
 	git add .
 
 git-push-master: 
-	git push origin mastar
+	git push origin master
 
 git-commit-dev: 
 	git commit -m "dev"
