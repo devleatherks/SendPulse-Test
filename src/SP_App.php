@@ -1,0 +1,97 @@
+<?php 
+
+    use Psr\Container\ContainerInterface;
+    class SP_App{
+
+        /**
+         * Types of page replies
+         *
+         * @var array
+         */
+		const HEADER_MIME_TYPES = [
+
+            'txt'   => 'text/plain',
+            'htm'   => 'text/html',
+            'html'  => 'text/html',
+            'php'   => 'text/html',
+            'css'   => 'text/css',
+            'js'    => 'application/javascript',
+            'json'  => 'application/json',
+            'xml'   => 'application/xml',
+            'swf'   => 'application/x-shockwave-flash',
+            'flv'   => 'video/x-flv',
+
+            # Images
+            'png'   => 'image/png',
+            'jpe'   => 'image/jpeg',
+            'jpeg'  => 'image/jpeg',
+            'jpg'   => 'image/jpeg',
+            'gif'   => 'image/gif',
+            'bmp'   => 'image/bmp',
+            'ico'   => 'image/vnd.microsoft.icon',
+            'tiff'  => 'image/tiff',
+            'tif'   => 'image/tiff',
+            'svg'   => 'image/svg+xml',
+            'svgz'  => 'image/svg+xml',
+
+            # archives
+            'zip'   => 'application/zip',
+            'rar'   => 'application/x-rar-compressed',
+            'exe'   => 'application/x-msdownload',
+            'msi'   => 'application/x-msdownload',
+            'cab'   => 'application/vnd.ms-cab-compressed',
+
+            # audio/video
+            'mp3'   => 'audio/mpeg',
+            'qt'    => 'video/quicktime',
+            'mov'   => 'video/quicktime',
+
+            # adobe
+            'pdf'   => 'application/pdf',
+            'psd'   => 'image/vnd.adobe.photoshop',
+            'ai'    => 'application/postscript',
+            'eps'   => 'application/postscript',
+            'ps'    => 'application/postscript',
+
+            # ms office
+            'doc'   => 'application/msword',
+            'rtf'   => 'application/rtf',
+            'xls'   => 'application/vnd.ms-excel',
+            'ppt'   => 'application/vnd.ms-powerpoint',
+
+            # open office
+            'odt'   => 'application/vnd.oasis.opendocument.text',
+            'ods'   => 'application/vnd.oasis.opendocument.spreadsheet',
+        ];
+
+        public static function view(ContainerInterface $container, String $contentType, Array $out, int $code = 200, String $template = 'index'){
+
+            if($contentType == 'json')
+                return $container->response->withStatus($code)
+                                ->withHeader('Content-Type', SP_App::HEADER_MIME_TYPES[$contentType])
+                                ->write(json_encode($out));
+            else
+                return $container->view->render($container->response, $template . '.phtml', $out);
+
+        }
+
+        /**
+         * DIRECTORY_SEPARATOR 
+         * 
+         * @param String $path
+         * 
+         * @return String
+         * 
+         */
+        public static function DS(string $path){
+
+            if(DIRECTORY_SEPARATOR  == '/')
+                return str_replace('\\', '/', $path);
+            elseif(DIRECTORY_SEPARATOR  == '\\')
+                return str_replace('/', '\\', $path);
+
+        }
+
+    }
+
+?>

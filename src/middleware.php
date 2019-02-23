@@ -5,7 +5,7 @@
 
 spl_autoload_register(function($name){
     
-    $classname = str_replace('\\', '/', SP_DIR . '/src/' . $name . '.php');
+    $classname = str_replace('\\', '/', SP_DIR . '/src/' . $name . '.php'); 
 
     if(file_exists($classname))
         return include $classname;
