@@ -1,6 +1,7 @@
 <?php 
+    namespace Helper;
 
-    use Psr\Container\ContainerInterface;
+    use Slim\Container;
 
     class SlimApp{
 
@@ -85,7 +86,7 @@
          * 
          * @param Psr\Container\ContainerInterface $container;
          */
-        public function __construct(ContainerInterface $container) {
+        public function __construct(\Slim\Container $container) {
             $this->container = $container;
         }
 
@@ -106,7 +107,7 @@
 
         }
 
-        public static function view(ContainerInterface $container, String $contentType, Array $out, int $code = 200, String $template = 'index'){
+        public static function view(Container $container, String $contentType, Array $out, int $code = 200, String $template = 'index'){
 
             if($contentType == 'json')
                 return $container->response->withStatus($code)

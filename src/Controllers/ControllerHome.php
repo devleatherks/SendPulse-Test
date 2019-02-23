@@ -14,7 +14,7 @@
     use Psr\Container\ContainerInterface;
     use Slim\Http\Request;
     use Slim\Http\Response;
-    use Helper;
+    use Helper\SlimApp;
 
     class ControllerHome extends SlimApp{
 
@@ -29,7 +29,7 @@
          */
         public function view_main(Request $request, Response $response, Array $args): Response{
 
-            return \SlimApp::view($this->container, 'html', [], 200);
+            return SlimApp::view($this->container, 'html', [], 200);
             
 
         }
@@ -39,7 +39,7 @@
             $data = $this->formValidity($formData);
 
             if($data->status === false)
-                return \SlimApp::view($this->container, 'json', $data->response, 201);
+                return SlimApp::view($this->container, 'json', $data->response, 201);
             
             
 
