@@ -17,4 +17,4 @@ git-pull-all:
 	git pull origin master
 
 git-pull-remote:
-	ssh -i key.ssh root@185.65.246.248 /var/www/tooldev.top/html/dev-make.sh
+	ssh -i .vscode/key.ssh root@185.65.246.248 /var/www/tooldev.top/html/dev-make.sh
