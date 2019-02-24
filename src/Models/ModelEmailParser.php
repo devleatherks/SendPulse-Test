@@ -32,7 +32,9 @@
             $collection = $this->mongoDB('parser_task');
             
             $insertOneResult = $collection->insertOne($insertData);
-            print_r($insertOneResult);
+            printf("Inserted %d document(s)\n", $insertOneResult->getInsertedCount());
+
+var_dump($insertOneResult->getInsertedId());
 
             // self::$container->
 
