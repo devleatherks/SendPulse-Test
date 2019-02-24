@@ -193,7 +193,7 @@
                 ['upsert' => true]
             );
 
-            return $resultParse;
+            return $parserData;
 
         }
 
@@ -285,6 +285,7 @@
 
             // $insertData['_id'] = $this->getNextSequence($db_table);
             // $insertData['result'] = $parser_result;
+            $insertData['url'] = $url;
             $insertData['result'] = 1;
 
             $insertOneResult = $collection->insertOne($insertData);
