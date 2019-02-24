@@ -175,7 +175,8 @@
             if(empty($task))
                 return false;
 
-            $parserData = [];  $parserData[$task['url']] = [];
+            $parserData = [];  
+            $parserData[$task['url']] = [];
 
             $this->updataTask(
                 ['_id' => $task['_id']],
@@ -184,6 +185,7 @@
             );
 
             $this->parser($this->senderGET($task['url']), $task['url'], $parserData[$task['url']], $task['nesting'] + 1);
+            var_dump($parserData);
 
             // $this->saveParser($task['url'], $parserData);
 
