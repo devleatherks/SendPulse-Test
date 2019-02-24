@@ -52,7 +52,7 @@
 
             $collection = $this->mongoDB('parser_task');
 
-            $insertOneResult = $collection->find(['action' => 0, 'work' => 1]);
+            $insertOneResult = $collection->findOne(['action' => 0, 'work' => 1]);
 
             return empty($insertOneResult) ? false : $insertOneResult;
 
