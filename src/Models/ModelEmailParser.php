@@ -298,13 +298,13 @@
         /**
          * Set New Task To DB
          */
-        public function updataTask(array $updateData){
+        public function updataTask(array $search, array $updateData, array $option){
 
             $db_table = 'parser_task';
 
             $collection = $this->mongoDB($db_table);
 
-            $insertOneResult = $collection->updateOne($updateData);
+            $insertOneResult = $collection->updateOne($search, $updateData, $option);
 
             return $insertOneResult;
 
