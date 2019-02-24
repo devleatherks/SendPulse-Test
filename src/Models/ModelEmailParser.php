@@ -177,11 +177,9 @@
 
             $parserData = [];  $parserData[$task['url']] = [];
 
-            var_dump($task);
-
             $this->updataTask(
                 ['url' => $task['url']],
-                ["$set" => ['work' => 1]],
+                ['$set' => ['work' => 1]],
                 ['upsert' => true]
             );
 
@@ -191,7 +189,7 @@
 
             $this->updataTask(
                 ['url' => $task['url']],
-                ["$set" => ['status' => 1, 'work' => 0]],
+                ['$set' => ['status' => 1, 'work' => 0]],
                 ['upsert' => true]
             );
 
