@@ -304,7 +304,7 @@
 
             $collection = $this->mongoDB($db_table);
 
-            $insertOneResult = $collection->updateOne($search, $updateData);
+            $insertOneResult = $collection->update($search, $updateData);
 
             return $insertOneResult;
 
