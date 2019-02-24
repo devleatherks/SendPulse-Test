@@ -286,7 +286,7 @@
             // $insertData['_id'] = $this->getNextSequence($db_table);
             // $insertData['result'] = $parser_result;
             $insertData['url'] = $url;
-            $insertData['result'] = 1;
+            $insertData['result'] = $parser_result;
 
             $insertOneResult = $collection->insertOne($insertData);
 
