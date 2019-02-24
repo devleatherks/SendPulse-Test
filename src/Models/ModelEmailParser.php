@@ -184,13 +184,12 @@
             );
 
             $this->parser($this->senderGET($task['url']), $task['url'], $parserData[$task['url']], $task['nesting']);
-            var_dump($parserData);
 
-            $this->saveParser($task['url'], $parserData);
+            // $this->saveParser($task['url'], $parserData);
 
             $this->updataTask(
                 ['_id' => $task['_id']],
-                ['$set' => ['status' => 1, 'work' => 0]],
+                ['$set' => ['status' => 1, 'work' => 0, 'result' => json_encode($parserData)]],
                 ['upsert' => true]
             );
 
