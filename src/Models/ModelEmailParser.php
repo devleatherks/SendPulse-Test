@@ -23,6 +23,7 @@
          */
         protected $database = 'email_parser';
 
+        
         /**
          * Set New Task To DB
          */
@@ -31,6 +32,8 @@
             $collection = $this->mongoDB('parser_task');
             
             $insertOneResult = $collection->insertOne($insertData);
+
+            // self::$container->
 
             return [];
 
