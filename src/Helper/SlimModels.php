@@ -56,6 +56,24 @@
             
         }
 
+        function getNextSequence($name){
+
+            $collection = $this->mongoDB('counters');
+            
+            $result =  $collection->findAndModify(
+                ['_id' => $name],
+                ['$inc' => ['seq' => 1]],
+                ['seq' => true],
+                ['new' => true, 'upsert' => true]
+            );
+
+            if (isset($result['seq']))
+                return $result['seq'];
+
+            return false;
+            
+        }
+
     }
 
 ?>
