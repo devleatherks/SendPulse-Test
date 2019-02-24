@@ -29,7 +29,7 @@ $container['logger'] = function ($c) {
 # Monolog
 $container['mongoDB'] = function ($c) {
 
-    return (new MongoDB\Client);
+    return new MongoDB\Client;
 
 };
 

@@ -11,6 +11,8 @@
 
     namespace Helper;
 
+    use Slim\Container;
+
     class SlimModels{
 
         /**
@@ -20,13 +22,20 @@
          */
         private static $useDatabase = [];
 
+         /**
+         * Slim container
+         * 
+         * @var Slim\Container
+         */
+        protected static $container;
+
         /**
          * Constructor receives container instance
          * 
-         * @param Psr\Container\ContainerInterface $container;
+         * @param  Slim\Container $container;
          */
-        public function __construct(ContainerInterface $container) {
-            $this->container = $container;
+        public function __construct(Container $container) {
+            self::$container = $container;
         }
 
         /**
@@ -43,7 +52,7 @@
 
             if(empty($this->useDatabase[$name_id]))
                 return $this->useDatabase[$name_id] = 
-                    $this->container->mongoDB->{($database == false ? sels::$database : $database)}->{$db_table};
+                    self::$container->mongoDB->{($database == false ? $this->database : $database)}->{$db_table};
             
         }
 

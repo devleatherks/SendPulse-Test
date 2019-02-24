@@ -79,17 +79,17 @@
         /**
          * Slim container
          * 
-         * @var Psr\Container\ContainerInterface
+         * @var Slim\Container
          */
-        protected $container;
+        protected static $container;
 
         /**
          * Constructor receives container instance
          * 
-         * @param Psr\Container\ContainerInterface $container;
+         * @param Slim\Container $container;
          */
-        public function __construct(\Slim\Container $container) {
-            $this->container = $container;
+        public function __construct(Container $container){
+            self::$container = $container;
         }
 
         /**
@@ -123,14 +123,14 @@
          * 
          * @return \Slim\Http\Response
          */
-        public static function view(Container $container, String $contentType, Array $out, int $code = 200, String $template = 'index'): Response{
+        public static function view(String $contentType, Array $out, int $code = 200, String $template = 'index'): Response{
 
             if($contentType == 'json')
-                return $container->response->withStatus($code)
+                return self::$container->response->withStatus($code)
                                 ->withHeader('Content-Type', SP_App::HEADER_MIME_TYPES[$contentType])
                                 ->write(json_encode($out));
             else
-                return $container->view->render($container->response, $template . '.phtml', $out);
+                return self::$container->view->render(self::$container->response, $template . '.phtml', $out);
 
         }
 

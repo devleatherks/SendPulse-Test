@@ -12,7 +12,7 @@
 
     namespace Models;
 
-    use Helper;
+    use Helper\SlimModels;
 
     class ModelEmailParser extends SlimModels{
 

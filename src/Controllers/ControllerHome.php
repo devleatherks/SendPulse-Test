@@ -57,9 +57,9 @@
                 'nesting'   => $data['response']['nesting'],
                 'url'       => $data['response']['url'],
             ])){
-                return SlimApp::view($this->container, 'json', $result, 200);
+                return SlimApp::view('json', $result, 200);
             }else{
-                return SlimApp::view($this->container, 'json', [
+                return SlimApp::view('json', [
                     'error' => 'system Error'
                 ], 201);
             }
@@ -86,14 +86,14 @@
                 $error[] = 'Empty url';
 
             if(filter_var($formData['url'], FILTER_VALIDATE_URL)){
-                $data['nesting'] = $formData['url'];
+                $data['url'] = $formData['url'];
             }else{
                 $error[] = 'URL not valid';
             }
 
             return [
                 'status' => empty($error) ? true : false, 
-                'data' => empty($error) ? $data : $error
+                'response' => empty($error) ? $data : $error
             ];
 
         }

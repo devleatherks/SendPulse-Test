@@ -30,8 +30,8 @@ let appParserEmail = function($){
 
             let data = {nesting: null, url: null};
 
-            data.nesting    = $(e.target).find(selectors.input_url);
-            data.url        = $(e.target).find(selectors.input_nesting);
+            data.nesting    = $(e.target).find(selectors.input_nesting);
+            data.url        = $(e.target).find(selectors.input_url);
 
             try{
                 // Проверить все поля на валидацию и отправляем данные на сервер, 
