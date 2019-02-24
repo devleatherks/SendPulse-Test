@@ -45,7 +45,7 @@
         public function api_processQueue_test(Request $request, Response $response, Array $args){
 
             $this->model('ModelEmailParser')->runTask([
-                'url' => 'https://www.abwehr.com.ua/',
+                'url' => 'https://www.xml-sitemaps.com/',
                 'nesting' => 1
             ]);
 

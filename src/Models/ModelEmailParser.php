@@ -24,6 +24,7 @@
         protected $database = 'email_parser';
 
         private $parserData = [];
+        private $booferURL = [];
 
         public function getWorkingStatus(bool $returnObject = false){
 
@@ -47,6 +48,9 @@
         public function findAllEmailInDocument(string $html){
 
             preg_match_all('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/', $html, $potential_emails, PREG_SET_ORDER);
+
+            if(empty($potential_emails))
+                return [];
 
             $potential_emails = array_unique($potential_emails[0]);
 
@@ -79,8 +83,8 @@
             $contentType = explode(';', $contentType);
 
             if($contentType[0] == 'text/html' && $code == 200){
-                return ['contentType' => $contentType, 'code' => $code];
-                // return ['contentType' => $contentType, 'code' => $code, 'response' => $response];
+                // return ['contentType' => $contentType, 'code' => $code];
+                return ['contentType' => $contentType, 'code' => $code, 'response' => $response, 'url' => $domain];
             }
 
             return false;
@@ -97,7 +101,10 @@
             
             foreach($match[0] as $address){
                 if(stristr($address, '://' . $host) !== false){
-                    $data_URL = $this->senderGET($address);
+                    if($result = $this->senderGET($address)){
+                        $data_URL[] = $result;
+                    }
+                    
                 }
             }
 
@@ -113,17 +120,40 @@
                 return false;
 
             $parserData = [];
+
+            $this->booferURL[$task['url']] = $task['url'];
+            $parserData[$task['url']] = [];
             
-            $this->parse(file_get_contents($task['url']), $parserData, 3);
+            $this->parse(file_get_contents($task['url']), $task['url'], $parserData[$task['url']], 3);
+
+            print_r($parserData);
 
         }
 
-        public function parse(string $html, &$saveParse, $maxLevel = 1, $steplevel = 1){
+        public function parse(string $html, string $thisurl, &$saveParse, $maxLevel = 1, $steplevel = 1){
 
-            $emails = $this->findAllEmailInDocument($html);
-            $urls   = $this->findAllUrlInDocument($html, $task['url']);
+            $steplevel++;
 
-            
+            if($steplevel > $maxLevel)
+                return false;
+
+            $saveParse['emails'] = $this->findAllEmailInDocument($html);
+            $urls   = $this->findAllUrlInDocument($html, $thisurl);
+
+            if(empty($urls))
+                return false;
+
+            foreach($urls as $url){
+
+                if(array_search($url['url'], $this->booferURL) !== false)
+                    continue;
+
+                $parserData[$url['url']] = [];
+
+                $this->parse($url['response'], $url['url'], $parserData[$url['url']], $maxLevel, $steplevel);
+
+            }
+            #array_search($booferURL,)
 
         }
 
