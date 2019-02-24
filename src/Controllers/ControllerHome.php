@@ -50,12 +50,12 @@
 
             $data = $this->formValidity($parsed);
 
-            if($data->status === false)
-                return SlimApp::view($this->container, 'json', $data->response, 201);
+            if($data['status'] === false)
+                return SlimApp::view($this->container, 'json', $data['response'], 201);
             
             if($result = $this->model('ModelEmailParser')->setNewTask([
-                'nesting'   => $data->response['nesting'],
-                'url'       => $data->response['url'],
+                'nesting'   => $data['response']['nesting'],
+                'url'       => $data['response']['url'],
             ])){
                 return SlimApp::view($this->container, 'json', $result, 200);
             }else{
@@ -91,7 +91,7 @@
                 $error[] = 'URL not valid';
             }
 
-            return (object)[
+            return [
                 'status' => empty($error) ? true : false, 
                 'data' => empty($error) ? $data : $error
             ];
