@@ -32,6 +32,8 @@
             
             $insertOneResult = $collection->insertOne($insertData);
 
+            return [];
+
         }
 
     }
