@@ -179,21 +179,21 @@
 
             var_dump($task);
 
-            $this->updataTask([
+            $this->updataTask(
                 ['url' => $task['url']],
                 [$set => ['work' => 1]],
                 ['upsert' => true]
-            ]);
+            );
 
             $resultParse = $this->parser($this->senderGET($task['url']), $task['url'], $parserData[$task['url']], $task['nesting']);
 
             $this->saveParser($task['url'], $resultParse);
 
-            $this->updataTask([
+            $this->updataTask(
                 ['url' => $task['url']],
                 [$set => ['status' => 1, 'work' => 0]],
                 ['upsert' => true]
-            ]);
+            );
 
             return $resultParse;
 
