@@ -34,7 +34,7 @@
             $insertOneResult = $collection->insertOne($insertData);
             printf("Inserted %d document(s)\n", $insertOneResult->getInsertedCount());
 
-var_dump($insertOneResult->getInsertedId());
+            var_dump($insertOneResult->getInsertedId());
 
             // self::$container->
 
