@@ -16,7 +16,7 @@
                 <td><?= $task['url'] ?></td>
                 <td>
                     <pre id="json-<?= $task['_id'] ?>" class="json-body"></pre>
-                    <script>$('#json-<?= $task['_id'] ?>').jsonBrowse(<?= json_encode($task['result'] , JSON_PRETTY_PRINT) ?>); </script>
+                    <script>$('#json-<?= $task['_id'] ?>').jsonBrowse(<?= json_encode(json_decode($task['result']) , JSON_PRETTY_PRINT) ?>); </script>
                 </td>
                 <td><?= $task['url'] ?></td>
             </tr>
