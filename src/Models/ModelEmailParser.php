@@ -185,7 +185,7 @@
 
             $resultParse = $this->parser($this->senderGET($task['url']), $task['url'], $parserData[$task['url']], $task['nesting']);
 
-            $this->saveParser($task['url'], $resultParse);
+            $this->saveParser($task['url'], $parserData);
 
             $this->updataTask(
                 ['url' => $task['url']],
