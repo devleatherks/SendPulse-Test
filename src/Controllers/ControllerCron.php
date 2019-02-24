@@ -44,10 +44,14 @@
 
         public function api_processQueue_test(Request $request, Response $response, Array $args){
 
-            $this->model('ModelEmailParser')->runTask([
-                'url' => 'https://www.abwehr.com.ua',
+            $result = $this->model('ModelEmailParser')->runTask([
+                'url' => 'https://blog.instadirect.pro/html/home.html',
                 'nesting' => 1
             ]);
+
+            return SlimApp::view('html', [
+                'json' => $result
+            ], 200, 'test');
 
         }
 

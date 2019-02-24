@@ -1,0 +1,14 @@
+<script src="//code.jquery.com/jquery-3.1.0.slim.min.js"></script>
+<script src="/assets/libs/json-browse/json-browse/jquery.json-browse.js"></script>
+<link href="/assets/libs/json-browse/json-browse/jquery.json-browse.css"rel="stylesheet">
+
+<?php 
+
+?>
+<pre id="json-renderer" class="json-body"></pre>
+<script>
+    var data = {
+        "foobar": "foobaz"
+    };
+    $('#json-renderer').jsonBrowse(<?= json_encode($json, JSON_PRETTY_PRINT) ?>);
+</script>

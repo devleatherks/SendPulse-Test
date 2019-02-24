@@ -26,6 +26,14 @@
         private $parserData = [];
         private $booferURL = [];
 
+        /**
+         * Returns the status of processes
+         * 
+         * Returns true if there are active objects.
+         * 
+         * @param bool $returnObject = false - true - return object db
+         * @return object | bool  
+         */
         public function getWorkingStatus(bool $returnObject = false){
 
             if($workTask = $this->getRunningTasks())
@@ -35,6 +43,11 @@
 
         }
 
+        /**
+         * Returns all active tasks
+         * 
+         * @return object | bool  
+         */
         public function getRunningTasks(){
 
             $collection = $this->mongoDB('parser_task');
@@ -45,9 +58,15 @@
 
         }
 
+        /**
+         * Searches for all emails on page
+         * 
+         * @param string $html - html code page 
+         * @return array - emails
+         */
         public function findAllEmailInDocument(string $html){
 
-            preg_match_all('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/', $html, $potential_emails, PREG_SET_ORDER);
+            preg_match_all("/[-a-z0-9!#$%&'*_`{|}~]+[-a-z0-9!#$%&'*_`{|}~\.=?]*@[a-zA-Z0-9_-]+[a-zA-Z0-9\._-]+/i", $html, $potential_emails);
 
             if(empty($potential_emails))
                 return [];
@@ -65,6 +84,17 @@
 
         }
 
+        /**
+         * For query queries with checks
+         * 
+         * Checks on the type of the received 
+         * document and on the page status.
+         * Returns html only if the text / html page.
+         * Otherwise false
+         * 
+         * @param string $domain - url 
+         * @return string | bool
+         */
         function senderGET(string $domain){
 
             $curlInit = curl_init();
@@ -83,27 +113,32 @@
             $contentType = explode(';', $contentType);
 
             if($contentType[0] == 'text/html' && $code == 200){
-                // return ['contentType' => $contentType, 'code' => $code];
-                return ['contentType' => $contentType, 'code' => $code, 'response' => $response, 'url' => $domain];
+                return $response;
             }
 
             return false;
 
         }
 
+        /**
+         * Finds all the links on the page.
+         * 
+         * @param string $html - text/html
+         * @param string $url -  url this page
+         * 
+         * @return array - all url page
+         */
         public function findAllUrlInDocument(string $html, string $url){
 
-            $this->booferURL[$url] = $url;
-
-            $host = parse_url($url);
+            $this->booferURL[$url] = $url; $host = parse_url($url);
 
             $dom = new \DOMDocument();
 
-            @$dom->loadHTML($html, LIBXML_NOERROR);
+            $dom->loadHTML($html, LIBXML_NOERROR);
 
-            $xpath = new \DOMXPath($dom);
+            $hrefs = (new \DOMXPath($dom))->evaluate("/html/body//a");
 
-            $hrefs = $xpath->evaluate("/html/body//a");
+            $data_URL = [];
             
             for($i = 0; $i < $hrefs->length; $i++){
                 
@@ -112,9 +147,16 @@
                 if(($href === '#') || ($href === '/'))
                     continue; 
 
+                # If the url is not complete, then we substitute the current domain
                 if((stristr($href, 'http://') === false) && (stristr($href, 'https://') === false))
                     $href = $host['scheme'] . '://' . $host['host'] . ($href[0] === '/' ? '' : '/') . $href;
 
+                # Check for duplicate links
+                if(array_search($href, $this->booferURL) !== false){
+                    continue;
+                }
+
+                # Check that the link to the current site
                 if(stristr($href, '://' . $host['host']) !== false)
                     $data_URL[] = $href;       
 
@@ -124,48 +166,67 @@
 
         }
 
+        /**
+         * Running task
+         * @param Array $task 
+         */
         public function runTask(Array $task){
 
             if(empty($task))
                 return false;
 
-            $parserData = [];
+            $parserData = [];  $parserData[$task['url']] = [];
 
-            $this->booferURL[$task['url']] = $task['url'];
-            $parserData[$task['url']] = [];
-            
-            $this->parse(file_get_contents($task['url']), $task['url'], $parserData[$task['url']], 1);
+            $resultParse = $this->parser($this->senderGET($task['url']), $task['url'], $parserData[$task['url']], 6);
 
-            print_r($parserData);
+            // $resultParse
+
+            return $resultParse;
 
         }
 
-        public function parse(string $html, string $thisurl, &$saveParse, $maxLevel = 1, $steplevel = 0){
+
+        /**
+         * Algorithm tree by reference
+         * Generates a tree
+         * @param string $html - text/html
+         * @param string $thisurl - url
+         * @param array &$saveParse - link to key
+         * @param int $maxLevel 
+         * @param int $steplevel
+         * 
+         * @return Array
+         */
+        public function parser(string $html, string $thisurl, array &$saveParse, int $maxLevel = 1, int $steplevel = 1){
 
             $steplevel++;
 
-            if($steplevel > $maxLevel)
+            if($steplevel >= $maxLevel)
                 return false;
 
-            echo '<h2>Level: ' . $steplevel . '</h2>';
-            echo '<h2>-------------------------------</h2>';
+            if(array_search($thisurl, $this->booferURL) !== false)
+                return false;
 
-
-            $saveParse['emails'] = $this->findAllEmailInDocument($html);
-            $urls   = $this->findAllUrlInDocument($html, $thisurl);
+            $saveParse  = $this->findAllEmailInDocument($html);
+            $urls       = $this->findAllUrlInDocument($html, $thisurl);
 
             if(empty($urls))
                 return false;
 
             foreach($urls as $url){
 
-                echo 'Url: ' . $url . '<br>';
-                echo '-----------------------------------<br><br>';
-
-                // $this->parse(file_get_contents($url), $url, $parserData[$url], $maxLevel, $steplevel);
+                if(array_search($url, $this->booferURL) !== false)
+                    continue;
+                
+                $saveParse[$url] = [];
+                    $this->parse($this->senderGET($url), $url, $saveParse[$url], $maxLevel, $steplevel);
+                
+                $this->booferURL[$thisurl] = $thisurl;
 
             }
 
+            $this->booferURL[$thisurl] = $thisurl;
+                
         }
 
         public function getNextTask(){
@@ -190,6 +251,26 @@
             $insertData['_id'] = $this->getNextSequence($db_table);
             $insertData['status'] = 0;
             $insertData['work'] = 0;
+
+            $insertOneResult = $collection->insertOne($insertData);
+
+            return $insertOneResult;
+
+        }
+
+        /**
+         * Set New Task To DB
+         */
+        public function saveParser(array $parser_result){
+
+            $db_table = 'parser_result';
+
+            $collection = $this->mongoDB($db_table);
+
+            $insertData = [];
+
+            $insertData['_id'] = $this->getNextSequence($db_table);
+            $insertData['result'] = $parser_result;
 
             $insertOneResult = $collection->insertOne($insertData);
 
