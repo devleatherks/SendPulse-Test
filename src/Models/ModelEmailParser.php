@@ -284,7 +284,8 @@
             $insertData = [];
 
             // $insertData['_id'] = $this->getNextSequence($db_table);
-            $insertData['result'] = $parser_result;
+            // $insertData['result'] = $parser_result;
+            $insertData['result'] = 1;
 
             $insertOneResult = $collection->insertOne($insertData);
 
