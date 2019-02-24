@@ -249,9 +249,7 @@
 
             $collection = $this->mongoDB('parser_task');
 
-            $insertOneResult = $collection->findOne(['action' => 0, 'work' => 0]);
-
-            var_dump($insertOneResult);
+            $insertOneResult = $collection->findOne(['status' => 0, 'work' => 0]);
 
             return empty($insertOneResult) ? false : $insertOneResult;
 
