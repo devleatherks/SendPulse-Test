@@ -32,7 +32,7 @@
             $collection = $this->mongoDB('parser_task');
             
             $insertOneResult = $collection->insertOne($insertData);
-            var_dump($insertOneResult);
+            print_r($insertOneResult);
 
             // self::$container->
 
