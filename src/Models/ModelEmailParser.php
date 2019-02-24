@@ -195,8 +195,6 @@
                 ['upsert' => true]
             ]);
 
-            // $resultParse
-
             return $resultParse;
 
         }
