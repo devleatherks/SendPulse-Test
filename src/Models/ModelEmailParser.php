@@ -201,8 +201,10 @@
 
 
         /**
+         * 
          * Algorithm tree by reference
          * Generates a tree
+         * 
          * @param string $html - text/html
          * @param string $thisurl - url
          * @param array &$saveParse - link to key
@@ -247,9 +249,9 @@
 
             $collection = $this->mongoDB('parser_task');
 
-            // var_dump($collection);
-
             $insertOneResult = $collection->findOne(['action' => 0, 'work' => 0]);
+
+            var_dump($insertOneResult);
 
             return empty($insertOneResult) ? false : $insertOneResult;
 
