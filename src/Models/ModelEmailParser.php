@@ -185,7 +185,7 @@
                 ['upsert' => true]
             ]);
 
-            $resultParse = $this->parser($this->senderGET($task['url']), $task['url'], $parserData[$task['url']], 6);
+            $resultParse = $this->parser($this->senderGET($task['url']), $task['url'], $parserData[$task['url']], $task['nesting']);
 
             $this->saveParser($task['url'], $resultParse);
 
