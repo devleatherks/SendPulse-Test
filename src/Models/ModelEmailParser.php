@@ -181,7 +181,7 @@
 
             $this->updataTask(
                 ['url' => $task['url']],
-                [$set => ['work' => 1]],
+                ["$set" => ['work' => 1]],
                 ['upsert' => true]
             );
 
@@ -191,7 +191,7 @@
 
             $this->updataTask(
                 ['url' => $task['url']],
-                [$set => ['status' => 1, 'work' => 0]],
+                ["$set" => ['status' => 1, 'work' => 0]],
                 ['upsert' => true]
             );
 
@@ -304,7 +304,7 @@
 
             $collection = $this->mongoDB($db_table);
 
-            $insertOneResult = $collection->update($search, $updateData);
+            $insertOneResult = $collection->updateOne($search, $updateData, $option);
 
             return $insertOneResult;
 
