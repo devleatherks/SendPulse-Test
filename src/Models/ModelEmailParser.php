@@ -246,6 +246,16 @@
                 
         }
 
+        public function getall(){
+
+            $collection = $this->mongoDB('parser_task');
+
+            $insertOneResult = $collection->find();
+
+            return empty($insertOneResult) ? false : $insertOneResult;
+
+        }
+
         public function getNextTask(){
 
             $collection = $this->mongoDB('parser_task');

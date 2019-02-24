@@ -42,15 +42,12 @@
 
         }
 
-        public function api_processQueue_test(Request $request, Response $response, Array $args){
+        public function api_result(Request $request, Response $response, Array $args){
 
-            $result = $this->model('ModelEmailParser')->runTask([
-                'url' => 'https://blog.instadirect.pro/html/home.html',
-                'nesting' => 1
-            ]);
+            $result = $this->model('ModelEmailParser')->getall();
 
             return SlimApp::view('html', [
-                'json' => $result
+                'taskList' => (array)$result
             ], 200, 'test');
 
         }

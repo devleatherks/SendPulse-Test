@@ -2,13 +2,26 @@
 <script src="/assets/libs/json-browse/json-browse/jquery.json-browse.js"></script>
 <link href="/assets/libs/json-browse/json-browse/jquery.json-browse.css"rel="stylesheet">
 
-<?php 
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Ссылка</th>
+            <th scope="col">Глубина</th>
+            <th scope="col">Состояние</th>
+        </tr>
+    </thead>
+    <tbody>
+        <th scope="row">3</th>
+            <?php foreach($taskList as $task): ?>
+                <td><?= $task['url'] ?></td>
+                <td>
+                    <pre id="json-<?= $task['_id'] ?>" class="json-body"></pre>
+                    <script>$('#json-<?= $task['_id'] ?>').jsonBrowse(<?= json_encode($task['result'] , JSON_PRETTY_PRINT) ?>); </script>
+                    </td>
+            <?php endforeach; ?>
+        </tr>
+    </tbody>
+</table>
 
-?>
-<pre id="json-renderer" class="json-body"></pre>
-<script>
-    var data = {
-        "foobar": "foobaz"
-    };
-    $('#json-renderer').jsonBrowse(<?= json_encode($json, JSON_PRETTY_PRINT) ?>);
-</script>
+
+
