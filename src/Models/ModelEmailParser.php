@@ -185,7 +185,7 @@
             );
 
             $this->parser($this->senderGET($task['url']), $task['url'], $parserData[$task['url']], $task['nesting'] + 1);
-            var_dump($parserData);
+            var_dump($task);
 
             // $this->saveParser($task['url'], $parserData);
 
