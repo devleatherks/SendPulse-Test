@@ -45,7 +45,10 @@
          */
         public function api_setPrseURL(Request $request, Response $response, Array $args): Response{
 
-            $data = $this->formValidity($formData);
+            # Post || flow
+            $parsed = $request->getParsedBody(); 
+
+            $data = $this->formValidity($parsed);
 
             if($data->status === false)
                 return SlimApp::view($this->container, 'json', $data->response, 201);
