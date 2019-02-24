@@ -235,8 +235,8 @@
                     continue;
                 
                 $saveParse[$url] = [];
-                
-                $this->parse($this->senderGET($url), $url, $saveParse[$url], $maxLevel, $steplevel);
+
+                $this->parser($this->senderGET($url), $url, $saveParse[$url], $maxLevel, $steplevel);
                 
                 $this->booferURL[$thisurl] = $thisurl;
 
