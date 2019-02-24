@@ -178,7 +178,7 @@
             $parserData = [];  $parserData[$task['url']] = [];
 
             $this->updataTask(
-                ['url' => $task['url']],
+                ['_id' => $task['_id']],
                 ['$set' => ['work' => 1]],
                 ['upsert' => true]
             );
@@ -189,7 +189,7 @@
             $this->saveParser($task['url'], $parserData);
 
             $this->updataTask(
-                ['url' => $task['url']],
+                ['url' => $task['_id']],
                 ['$set' => ['status' => 1, 'work' => 0]],
                 ['upsert' => true]
             );
