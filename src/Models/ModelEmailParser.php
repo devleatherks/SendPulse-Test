@@ -170,7 +170,7 @@
          * Running task
          * @param Array $task 
          */
-        public function runTask(Array $task){
+        public function runTask($task){
 
             if(empty($task))
                 return false;
