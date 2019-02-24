@@ -26,11 +26,11 @@
         /**
          * Set New Task To DB
          */
-        public function setNewTask(){
+        public function setNewTask(array $insertData){
 
             $collection = $this->mongoDB('parser_task');
             
-            $insertOneResult = $collection->insertOne(['_id' => 1, 'name' => 'Alice']);
+            $insertOneResult = $collection->insertOne($insertData);
 
         }
 

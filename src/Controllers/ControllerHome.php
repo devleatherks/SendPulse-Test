@@ -34,6 +34,15 @@
 
         }
 
+        /**
+         * Creating a new task
+         * 
+         * @param \Slim\Http\Request $request
+         * @param \Slim\Http\Response $response
+         * @param Array $args
+         * 
+         * @return \Slim\Http\Response
+         */
         public function api_setPrseURL(Request $request, Response $response, Array $args): Response{
 
             $data = $this->formValidity($formData);
@@ -41,11 +50,26 @@
             if($data->status === false)
                 return SlimApp::view($this->container, 'json', $data->response, 201);
             
-            
+            if($result = $this->model('ModelEmailParser')->setNewTask([
+                'nesting'   => $data->response['nesting'],
+                'url'       => $data->response['url'],
+            ])){
+                return SlimApp::view($this->container, 'json', $result, 200);
+            }else{
+                return SlimApp::view($this->container, 'json', [
+                    'error' => 'system Error'
+                ], 201);
+            }
 
         }
 
-        private function formValidity(array $formData){
+        /**
+         * Check the validity of the form
+         * 
+         * @param array $formData
+         * @return array
+         */
+        private function formValidity(array $formData): Array{
 
             $error = []; $data = []; 
 
@@ -57,6 +81,12 @@
 
             if(empty($formData['url'])) 
                 $error[] = 'Empty url';
+
+            if(filter_var($formData['url'], FILTER_VALIDATE_URL)){
+                $data['nesting'] = $formData['url'];
+            }else{
+                $error[] = 'URL not valid';
+            }
 
             return (object)[
                 'status' => empty($error) ? true : false, 

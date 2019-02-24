@@ -2,6 +2,8 @@
     namespace Helper;
 
     use Slim\Container;
+    use Slim\Http\Request;
+    use Slim\Http\Response;
 
     class SlimApp{
 
@@ -91,7 +93,7 @@
         }
 
         /**
-         * Подключает модель к контроллеру
+         * Connect the module to the controller
          *
          * @param string $namemodel
          * @return void
@@ -107,7 +109,21 @@
 
         }
 
-        public static function view(Container $container, String $contentType, Array $out, int $code = 200, String $template = 'index'){
+        /**
+         * Output control
+         * 
+         * Depending on the transferred header, 
+         * the method determines the type of data to be output.
+         * 
+         * @param \Slim\Container @container
+         * @param String @contentType
+         * @param Array @out
+         * @param int @code
+         * @param String @template
+         * 
+         * @return \Slim\Http\Response
+         */
+        public static function view(Container $container, String $contentType, Array $out, int $code = 200, String $template = 'index'): Response{
 
             if($contentType == 'json')
                 return $container->response->withStatus($code)
