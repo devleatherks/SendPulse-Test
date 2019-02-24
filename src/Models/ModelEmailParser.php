@@ -252,7 +252,13 @@
 
             $insertOneResult = $collection->find();
 
-            return empty($insertOneResult) ? false : $insertOneResult;
+            $list = [];
+
+             foreach ( $insertOneResult as $id => $value ){
+                $list[$id] = $value;
+            }
+
+            return empty($list) ? false : $list;
 
         }
 

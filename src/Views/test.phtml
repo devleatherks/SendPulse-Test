@@ -11,15 +11,16 @@
         </tr>
     </thead>
     <tbody>
-        <th scope="row">3</th>
-            <?php foreach($taskList as $task): ?>
+        <?php foreach($taskList as $task): ?>
+            <tr>
                 <td><?= $task['url'] ?></td>
                 <td>
                     <pre id="json-<?= $task['_id'] ?>" class="json-body"></pre>
                     <script>$('#json-<?= $task['_id'] ?>').jsonBrowse(<?= json_encode($task['result'] , JSON_PRETTY_PRINT) ?>); </script>
-                    </td>
-            <?php endforeach; ?>
-        </tr>
+                </td>
+                <td><?= $task['url'] ?></td>
+            </tr>
+        <?php endforeach; ?>
     </tbody>
 </table>
 
