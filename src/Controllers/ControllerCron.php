@@ -29,7 +29,7 @@
          * 
          * @return \Slim\Http\Response
          */
-        public function api_processQueue(Request $request, Response $response, Array $args): Response{
+        public function api_processQueue(Request $request, Response $response, Array $args){
 
             # We check running tasks
             if($this->model('ModelEmailParser')->getWorkingStatus() === false)
