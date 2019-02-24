@@ -82,11 +82,6 @@
 
             $contentType = explode(';', $contentType);
 
-            // echo 'Url: ' . $domain . '<br>';
-            // echo 'Type: ' . $contentType[0] . '<br>';
-            // echo 'Code: ' . $code . '<br>';
-            // echo '-----------------------------------<br><br>';
-
             if($contentType[0] == 'text/html' && $code == 200){
                 // return ['contentType' => $contentType, 'code' => $code];
                 return ['contentType' => $contentType, 'code' => $code, 'response' => $response, 'url' => $domain];
@@ -120,12 +115,8 @@
                 if((stristr($href, 'http://') === false) && (stristr($href, 'https://') === false))
                     $href = $host['scheme'] . '://' . $host['host'] . ($href[0] === '/' ? '' : '/') . $href;
 
-                if(($href === $url) && (array_search($href, $this->booferURL) !== false))
-                    continue; 
-
                 if(stristr($href, '://' . $host['host']) !== false)
-                    if($result = $this->senderGET($href))
-                        $data_URL[] = $result; 
+                    $data_URL[] = $href;       
 
             }
 
@@ -143,7 +134,7 @@
             $this->booferURL[$task['url']] = $task['url'];
             $parserData[$task['url']] = [];
             
-            $this->parse(file_get_contents($task['url']), $task['url'], $parserData[$task['url']], 2);
+            $this->parse(file_get_contents($task['url']), $task['url'], $parserData[$task['url']], 1);
 
             print_r($parserData);
 
@@ -156,8 +147,9 @@
             if($steplevel > $maxLevel)
                 return false;
 
-            // echo '<h2>Level: ' . $steplevel . '</h2>';
-            // echo '<h2>-------------------------------</h2>';
+            echo '<h2>Level: ' . $steplevel . '</h2>';
+            echo '<h2>-------------------------------</h2>';
+
 
             $saveParse['emails'] = $this->findAllEmailInDocument($html);
             $urls   = $this->findAllUrlInDocument($html, $thisurl);
@@ -167,12 +159,10 @@
 
             foreach($urls as $url){
 
-                if(array_search($url['url'], $this->booferURL) !== false)
-                    continue;
+                echo 'Url: ' . $url . '<br>';
+                echo '-----------------------------------<br><br>';
 
-                $parserData[$url['url']] = [];
-
-                $this->parse($url['response'], $url['url'], $parserData[$url['url']], $maxLevel, $steplevel);
+                // $this->parse(file_get_contents($url), $url, $parserData[$url], $maxLevel, $steplevel);
 
             }
 
