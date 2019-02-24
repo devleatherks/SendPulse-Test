@@ -56,7 +56,7 @@
                 'nesting'   => $data['response']['nesting'],
                 'url'       => $data['response']['url'],
             ])){
-                return SlimApp::view('json', $result, 200);
+                return SlimApp::view('json', ['ok' => 200], 200);
             }else{
                 return SlimApp::view('json', [
                     'error' => 'system Error'
