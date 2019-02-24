@@ -29,7 +29,7 @@
          */
         public function view_main(Request $request, Response $response, Array $args): Response{
 
-            return SlimApp::view($this->container, 'html', [], 200);
+            return SlimApp::view('html', [], 200);
             
 
         }
