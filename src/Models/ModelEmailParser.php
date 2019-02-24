@@ -177,7 +177,23 @@
 
             $parserData = [];  $parserData[$task['url']] = [];
 
+            var_dump($task);
+
+            $this->updataTask([
+                ['_id' => $task['_id']],
+                [$set => ['work' => 1]],
+                ['upsert' => true]
+            ]);
+
             $resultParse = $this->parser($this->senderGET($task['url']), $task['url'], $parserData[$task['url']], 6);
+
+            $this->saveParser($resultParse);
+
+            $this->updataTask([
+                ['_id' => $task['_id']],
+                [$set => ['status' => 1, 'work' => 0]],
+                ['upsert' => true]
+            ]);
 
             // $resultParse
 
@@ -273,6 +289,21 @@
             $insertData['result'] = $parser_result;
 
             $insertOneResult = $collection->insertOne($insertData);
+
+            return $insertOneResult;
+
+        }
+
+        /**
+         * Set New Task To DB
+         */
+        public function updataTask(array $updateData){
+
+            $db_table = 'parser_task';
+
+            $collection = $this->mongoDB($db_table);
+
+            $insertOneResult = $collection->updateOne($updateData);
 
             return $insertOneResult;
 
