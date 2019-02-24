@@ -82,6 +82,11 @@
 
             $contentType = explode(';', $contentType);
 
+            // echo 'Url: ' . $domain . '<br>';
+            // echo 'Type: ' . $contentType[0] . '<br>';
+            // echo 'Code: ' . $code . '<br>';
+            // echo '-----------------------------------<br><br>';
+
             if($contentType[0] == 'text/html' && $code == 200){
                 // return ['contentType' => $contentType, 'code' => $code];
                 return ['contentType' => $contentType, 'code' => $code, 'response' => $response, 'url' => $domain];
@@ -93,24 +98,38 @@
 
         public function findAllUrlInDocument(string $html, string $url){
 
-            preg_match_all('#\bhttps?://[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))#', $html, $match);
+            $this->booferURL[$url] = $url;
 
-            $host = parse_url($url)['host'];
+            $host = parse_url($url);
 
-            $data_URL = [];
+            $dom = new \DOMDocument();
+
+            @$dom->loadHTML($html, LIBXML_NOERROR);
+
+            $xpath = new \DOMXPath($dom);
+
+            $hrefs = $xpath->evaluate("/html/body//a");
             
-            foreach($match[0] as $address){
-                if(stristr($address, '://' . $host) !== false){
-                    if($result = $this->senderGET($address)){
-                        $data_URL[] = $result;
-                    }
-                    
-                }
+            for($i = 0; $i < $hrefs->length; $i++){
+                
+                $href = $hrefs->item($i)->getAttribute('href');
+
+                if(($href === '#') || ($href === '/'))
+                    continue; 
+
+                if((stristr($href, 'http://') === false) && (stristr($href, 'https://') === false))
+                    $href = $host['scheme'] . '://' . $host['host'] . ($href[0] === '/' ? '' : '/') . $href;
+
+                if(($href === $url) && (array_search($href, $this->booferURL) !== false))
+                    continue; 
+
+                if(stristr($href, '://' . $host['host']) !== false)
+                    if($result = $this->senderGET($href))
+                        $data_URL[] = $result; 
+
             }
 
             return $data_URL;
-            return false;
-           
 
         }
 
@@ -124,18 +143,21 @@
             $this->booferURL[$task['url']] = $task['url'];
             $parserData[$task['url']] = [];
             
-            $this->parse(file_get_contents($task['url']), $task['url'], $parserData[$task['url']], 3);
+            $this->parse(file_get_contents($task['url']), $task['url'], $parserData[$task['url']], 2);
 
             print_r($parserData);
 
         }
 
-        public function parse(string $html, string $thisurl, &$saveParse, $maxLevel = 1, $steplevel = 1){
+        public function parse(string $html, string $thisurl, &$saveParse, $maxLevel = 1, $steplevel = 0){
 
             $steplevel++;
 
             if($steplevel > $maxLevel)
                 return false;
+
+            // echo '<h2>Level: ' . $steplevel . '</h2>';
+            // echo '<h2>-------------------------------</h2>';
 
             $saveParse['emails'] = $this->findAllEmailInDocument($html);
             $urls   = $this->findAllUrlInDocument($html, $thisurl);
@@ -153,7 +175,6 @@
                 $this->parse($url['response'], $url['url'], $parserData[$url['url']], $maxLevel, $steplevel);
 
             }
-            #array_search($booferURL,)
 
         }
 
