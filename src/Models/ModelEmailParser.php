@@ -247,7 +247,7 @@
 
             $collection = $this->mongoDB('parser_task');
 
-            var_dump($collection);
+            // var_dump($collection);
 
             $insertOneResult = $collection->findOne(['action' => 0, 'work' => 0]);
 
