@@ -30,7 +30,6 @@
         public function view_main(Request $request, Response $response, Array $args): Response{
 
             return SlimApp::view('html', [], 200);
-            
 
         }
 

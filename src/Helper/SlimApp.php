@@ -127,7 +127,7 @@
 
             if($contentType == 'json')
                 return self::$container->response->withStatus($code)
-                                ->withHeader('Content-Type', SP_App::HEADER_MIME_TYPES[$contentType])
+                                ->withHeader('Content-Type', self::HEADER_MIME_TYPES[$contentType])
                                 ->write(json_encode($out));
             else
                 return self::$container->view->render(self::$container->response, $template . '.phtml', $out);
