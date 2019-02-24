@@ -54,6 +54,8 @@
                 return $this->useDatabase[$name_id] = 
                     self::$container->mongoDB->{($database == false ? $this->database : $database)}->{$db_table};
             
+            return $this->useDatabase[$name_id];
+
         }
 
         function getNextSequence($name){
