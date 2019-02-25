@@ -31,7 +31,7 @@
                         <pre id="json-<?= $task['_id'] ?>" class="json-body"></pre>
                         <script>
                             jsonObject.push({
-                                id: '#json-<?= $task['_id'] ?>'
+                                id: '#json-<?= $task['_id'] ?>',
                                 json: <?= json_encode(json_decode($task['result']) , JSON_PRETTY_PRINT) ?>
                             });
                         </script>
