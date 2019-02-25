@@ -54,7 +54,7 @@ let appParserEmail = function($){
                 data: data,
                 success: callback === false ? (e) => {
 
-                    
+                    alert('Success!');
 
                 } : callback
             });
