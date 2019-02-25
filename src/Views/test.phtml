@@ -1,28 +1,65 @@
-<script src="//code.jquery.com/jquery-3.1.0.slim.min.js"></script>
-<script src="/assets/libs/json-browse/json-browse/jquery.json-browse.js"></script>
-<link href="/assets/libs/json-browse/json-browse/jquery.json-browse.css"rel="stylesheet">
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Ссылка</th>
-            <th scope="col">Глубина</th>
-            <th scope="col">Состояние</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach($taskList as $task): ?>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <title>Hello, SendPulse!</title>
+  </head>
+  <script>
+    let jsonObject = [];
+  </script>
+  <body class="p-top-25">
+    <table class="table">
+        <thead>
             <tr>
-                <td><?= $task['url'] ?></td>
-                <td>
-                    <pre id="json-<?= $task['_id'] ?>" class="json-body"></pre>
-                    <script>$('#json-<?= $task['_id'] ?>').jsonBrowse(<?= json_encode(json_decode($task['result']) , JSON_PRETTY_PRINT) ?>); </script>
-                </td>
-                <td><?= $task['url'] ?></td>
+                <th scope="col">Ссылка</th>
+                <th scope="col">Глубина</th>
+                <th scope="col">Состояние</th>
             </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <?php foreach($taskList as $task): ?>
+                <tr>
+                    <td><?= $task['url'] ?></td>
+                    <td>
+                        <pre id="json-<?= $task['_id'] ?>" class="json-body"></pre>
+                        <script>
+                            jsonObject.push({
+                                id: '#json-<?= $task['_id'] ?>'
+                                json: <?= json_encode(json_decode($task['result']) , JSON_PRETTY_PRINT) ?>
+                            });
+                        </script>
+                    </td>
+                    <td><?= $task['nesting'] ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"  crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.js" crossorigin="anonymous"></script>
+    <script src="/assets/libs/json-browse/json-browse/jquery.json-browse.js"></script>
+    <link href="/assets/libs/json-browse/json-browse/jquery.json-browse.css"rel="stylesheet">
+
+    <script>
+        $(document).ready(() => {
+            jsonObject.forEach((el, i) => {
+                $(el.id).jsonBrowse(el.json);
+            });
+           
+        })
+    </script>
+  </body>
+</html>
 
 
 
