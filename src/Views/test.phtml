@@ -27,8 +27,8 @@
             <tbody>
                 <?php foreach($taskList as $task): ?>
                     <tr>
-                        <td><?= $task['url'] ?></td>
                         <td>
+                            <?= $task['url'] ?>
                             <pre id="json-<?= $task['_id'] ?>" class="json-body"></pre>
                             <script>
                                 jsonObject.push({
@@ -37,7 +37,12 @@
                                 });
                             </script>
                         </td>
-                        <td><?= $task['nesting'] ?></td>
+                        <td>
+                            <?= $task['nesting'] ?>
+                        </td>
+                        <td>
+                            <?= ($task['work'] == 1) ? '<span class="text-danger">Работает</span>' : '<span class="text-success">Закончено</span>' ?>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
